@@ -1,11 +1,13 @@
-from client import APIClient
+from json_placeholder import JSONPlaceHolderService
+from posts.serializers import PostSerializer
+from posts.services import PostService
+from comments.services import CommentService
+from comments.serializers import CommentSerializer
 
-from serializer import PostSerializer
+json_placeholder_adapter = JSONPlaceHolderService()
+post_service = PostService(json_placeholder_adapter)
 
-
-client = APIClient("https://jsonplaceholder.typicode.com")
-
-response = client.get_all_posts()
+response = post_service.get_all_posts()
 
 serializer = PostSerializer()
 
@@ -13,6 +15,16 @@ serializer(response)
 
 print(serializer.data)
 
-# response_create_post = client.create_post(title="Mi primer post", body="Este es mi primer post en la API", user_id="1001")
+# response_create_post = post_service.create_post(title="Mi primer post", body="Este es mi primer post en la API", user_id="1001")
 
 # print(response_create_post)
+
+# comments_service = CommentService(json_placeholder_adapter)
+
+# comments = comments_service.get_all_comments()
+
+# comment_serializer = CommentSerializer()
+
+# comment_serializer(comments)
+
+# print(comment_serializer.data)
